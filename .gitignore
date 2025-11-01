@@ -32,7 +32,11 @@ ENV/
 *.swo
 
 # Project specific
+# Old directory (kept for backward compatibility)
 gree_documents/
+# New directory for all product documents
+product_documents/
+# Zip archives
 *.zip
 
 # Local development

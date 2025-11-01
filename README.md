@@ -1,13 +1,39 @@
-# PDF Downloader for GREE and TOSOT Documentation
+# AC Product Documentation Downloader
 
-This script downloads and organizes PDF documentation from GREE and TOSOT product websites into a structured folder hierarchy.
+This script downloads and organizes PDF documentation from various air conditioning product manufacturers (currently GREE and TOSOT) into a structured folder hierarchy.
 
 ## Features
 
-- Downloads PDFs from specified product documentation pages
-- Organizes files in a clean directory structure: `brand/model/type/filename.pdf`
-- Creates a ZIP archive of all downloaded documents
-- Preserves original filenames
+- Downloads PDFs from product documentation pages
+- Organizes files in a clean, consistent directory structure (see below)
+- Creates a ZIP archive (`ac_documents.zip`) of all downloaded documents
+- Preserves original filenames while organizing them logically
+- Skips already downloaded files to save bandwidth
+
+## Directory Structure
+
+```
+product_documents/
+├── GREE/
+│   ├── Model1/
+│   │   ├── user-manual/
+│   │   ├── technical-specs/
+│   │   └── marketing/
+│   └── Model2/
+│       └── ...
+└── TOSOT/
+    ├── ModelA/
+    │   ├── user-manual/
+    │   └── technical-specs/
+    └── ModelB/
+        └── ...
+```
+
+Document types are automatically categorized into:
+- `user-manual/`: User guides and instruction manuals
+- `technical-specs/`: Technical specifications, certificates, and compliance documents
+- `marketing/`: Catalogs, brochures, and marketing materials
+- `other/`: Any documents that don't fit the above categories
 
 ## Requirements
 
