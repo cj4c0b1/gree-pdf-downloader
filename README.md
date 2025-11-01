@@ -52,3 +52,11 @@ The script will:
 ## License
 
 This project is for personal/educational use only. Please respect the copyright of the downloaded documents.
+
+## Donations
+
+If you find this project useful, consider supporting its development:
+
+- **EVM Wallet**: `0x7B267EcEc11a07CA2a782E4b8a51558a70449e7c`
+
+Your support is greatly appreciated and helps maintain and improve this tool.
