@@ -35,7 +35,7 @@ def process_gree_comfort():
     """Process documents from greecomfort.com"""
     base_url = "https://www.greecomfort.com"
     url = f"{base_url}/system-documentation/"
-    return
+
     try:
         response = requests.get(url)
         response.raise_for_status()
@@ -80,7 +80,13 @@ def process_gree_comfort():
             
             # Download file
             filepath = dir_path / filename
-            print(f"Downloading {pdf_url} to {filepath}")
+            
+            # Skip if file already exists
+            if os.path.exists(filepath):
+                print(f"Skipping existing file: {filepath}")
+                continue
+                
+            print(f"Downloading {filename}...")
             download_file(pdf_url, filepath)
             
     except Exception as e:
@@ -159,8 +165,8 @@ def process_tosot_direct():
                 continue
                 
             print(f"Downloading {filename}...")
-            if download_file(pdf_url, filepath):
-                print(f"  -> Saved to: {filepath}")
+            #if download_file(pdf_url, filepath):
+            #    print(f"  -> Saved to: {filepath}")
             
     except Exception as e:
         print(f"Error processing tosotdirect.com: {e}")
@@ -171,15 +177,37 @@ def process_tosot_direct():
         print(f"Error processing tosotdirect.com: {e}")
 
 def create_zip():
-    """Create a ZIP archive of the downloaded files."""
+    """Create a ZIP archive of the downloaded files with progress indication."""
     print(f"Creating {ZIP_NAME}...")
+    
+    # First, count total files to process
+    total_files = 0
+    for root, _, files in os.walk(BASE_DIR):
+        total_files += len(files)
+    
+    if total_files == 0:
+        print("No files found to archive.")
+        return False
+    
+    processed_files = 0
+    last_percent = -1
+    
     with zipfile.ZipFile(ZIP_NAME, 'w', zipfile.ZIP_DEFLATED) as zipf:
         for root, _, files in os.walk(BASE_DIR):
             for file in files:
                 file_path = os.path.join(root, file)
                 arcname = os.path.relpath(file_path, os.path.join(BASE_DIR, '..'))
                 zipf.write(file_path, arcname)
-    print(f"Created {ZIP_NAME}")
+                
+                # Update progress
+                processed_files += 1
+                percent_complete = int((processed_files / total_files) * 100)
+                if percent_complete != last_percent:  # Only update when percentage changes
+                    last_percent = percent_complete
+                    print(f"\rProgress: {percent_complete}% ({processed_files}/{total_files} files)", end="")
+    
+    print(f"\nSuccessfully created {ZIP_NAME} ({os.path.getsize(ZIP_NAME) / (1024*1024):.2f} MB)")
+    return True
 
 def main():
     print("Starting PDF download and organization...")
